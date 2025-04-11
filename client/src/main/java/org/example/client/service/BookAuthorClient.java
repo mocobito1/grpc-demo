@@ -20,9 +20,8 @@ public class BookAuthorClient {
 
     private final BookAuthorServiceGrpc.BookAuthorServiceBlockingStub bookAuthorServiceBlockingStub;
 
-    public BookAuthorClient(GrpcServerConfig grpcServerConfig) {
-        ManagedChannel channel = GrpcChannelUtil.createChannel(grpcServerConfig);
-        bookAuthorServiceBlockingStub = BookAuthorServiceGrpc.newBlockingStub(channel);
+    public BookAuthorClient(BookAuthorServiceGrpc.BookAuthorServiceBlockingStub stub) {
+        this.bookAuthorServiceBlockingStub = stub;
     }
 
     public Map<Descriptors.FieldDescriptor, Object> getAuthor(int authorId) {

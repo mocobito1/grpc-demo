@@ -9,6 +9,3 @@ grpc:
     port: 9000
   healthcheck:
     interval: 15000
-logging:
-  level:
-    io.grpc.netty: DEBUG

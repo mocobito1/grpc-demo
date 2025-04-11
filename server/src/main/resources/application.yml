@@ -2,9 +2,3 @@ grpc:
   server:
     port: 9000
     health-service-enabled: true
-#logging:
-#  level:
-#    io.grpc: INFO
-#    io.grpc.netty: DEBUG
-#    io.grpc.internal: DEBUG
-#    io.grpc.netty.NettyClientHandler: DEBUG

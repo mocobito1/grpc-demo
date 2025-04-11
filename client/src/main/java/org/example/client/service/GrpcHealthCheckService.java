@@ -18,8 +18,8 @@ public class GrpcHealthCheckService {
     private final HealthGrpc.HealthBlockingStub healthStub;
 
 
-    public GrpcHealthCheckService(GrpcServerConfig grpcServerConfig) {
-        this.channel = ManagedChannelBuilder.forAddress(grpcServerConfig.getHost(), grpcServerConfig.getPort())
+    public GrpcHealthCheckService() {
+        this.channel = ManagedChannelBuilder.forAddress(GrpcServerConfig.HOST, GrpcServerConfig.PORT)
                 .usePlaintext()
                 .build();
         this.healthStub = HealthGrpc.newBlockingStub(channel);

@@ -22,8 +22,8 @@ public class GrpcChannelUtil {
                 .usePlaintext()
                 .build();
     }
-    public static ManagedChannel createChannel(GrpcServerConfig grpcServerConfig) {
-        return ManagedChannelBuilder.forAddress(grpcServerConfig.getHost(), grpcServerConfig.getPort())
+    public static ManagedChannel createChannel() {
+        return ManagedChannelBuilder.forAddress(GrpcServerConfig.HOST, GrpcServerConfig.PORT)
                 .keepAliveTime(30, TimeUnit.SECONDS)
                 .keepAliveTimeout(5, TimeUnit.SECONDS)
                 .keepAliveWithoutCalls(true)

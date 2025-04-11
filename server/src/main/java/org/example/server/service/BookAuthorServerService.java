@@ -66,6 +66,6 @@ public class BookAuthorServerService extends BookAuthorServiceGrpc.BookAuthorSer
     }
 
     private void simulateProcessingDelay() throws InterruptedException {
-        Thread.sleep(0);
+        Thread.sleep(SIMULATED_PROCESSING_DELAY_MS);
     }
 }
