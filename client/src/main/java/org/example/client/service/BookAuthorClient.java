@@ -6,6 +6,9 @@ import com.google.protobuf.Descriptors;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import lombok.extern.log4j.Log4j2;
+import org.example.client.config.GrpcServerConfig;
+import org.example.client.utils.GrpcChannelUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +20,8 @@ public class BookAuthorClient {
 
     private final BookAuthorServiceGrpc.BookAuthorServiceBlockingStub bookAuthorServiceBlockingStub;
 
-    public BookAuthorClient(@Value("${bookAuthor.service.address}") String serviceAddress) {
-        ManagedChannel channel = ManagedChannelBuilder.forTarget(serviceAddress)
-                .usePlaintext()
-                .build();
+    public BookAuthorClient(GrpcServerConfig grpcServerConfig) {
+        ManagedChannel channel = GrpcChannelUtil.createChannel(grpcServerConfig);
         bookAuthorServiceBlockingStub = BookAuthorServiceGrpc.newBlockingStub(channel);
     }
 

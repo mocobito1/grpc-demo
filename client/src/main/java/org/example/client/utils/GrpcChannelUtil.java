@@ -2,6 +2,9 @@ package org.example.client.utils;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import org.example.client.config.GrpcServerConfig;
+
+import java.util.concurrent.TimeUnit;
 
 public class GrpcChannelUtil {
     /**
@@ -13,6 +16,17 @@ public class GrpcChannelUtil {
      */
     public static ManagedChannel createChannel(String host, int port) {
         return ManagedChannelBuilder.forAddress(host, port)
+                .keepAliveTime(30, TimeUnit.SECONDS)            // Gửi ping mỗi 30s nếu không có hoạt động
+                .keepAliveTimeout(5, TimeUnit.SECONDS)          // Nếu không nhận được ACK trong 5s → đóng kết nối
+                .keepAliveWithoutCalls(true)                    // Vẫn ping kể cả không có RPC call đang mở
+                .usePlaintext()
+                .build();
+    }
+    public static ManagedChannel createChannel(GrpcServerConfig grpcServerConfig) {
+        return ManagedChannelBuilder.forAddress(grpcServerConfig.getHost(), grpcServerConfig.getPort())
+                .keepAliveTime(30, TimeUnit.SECONDS)
+                .keepAliveTimeout(5, TimeUnit.SECONDS)
+                .keepAliveWithoutCalls(true)
                 .usePlaintext()
                 .build();
     }

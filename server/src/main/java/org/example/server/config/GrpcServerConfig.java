@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @Log4j2
@@ -39,6 +40,9 @@ public class GrpcServerConfig {
 
         server = ServerBuilder
                 .forPort(grpcPort)
+                .permitKeepAliveWithoutCalls(true)
+                .permitKeepAliveTime(5, TimeUnit.SECONDS)
+
                 .addService(bookAuthorService)
                 .addService(healthStatusManager.getHealthService())
                 .executor(Executors.newFixedThreadPool(2))

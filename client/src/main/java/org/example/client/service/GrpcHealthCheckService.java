@@ -28,6 +28,8 @@ public class GrpcHealthCheckService {
     @Scheduled(fixedRateString = "${grpc.healthcheck.interval:5000}")
     public void checkHealth() {
         try {
+
+            log.warn("Channel state: {}", channel.getState(true));
             HealthCheckRequest request = HealthCheckRequest.newBuilder()
                     .setService("") // Empty string checks overall server health
                     .build();
@@ -50,7 +52,11 @@ public class GrpcHealthCheckService {
             channel.shutdown().awaitTermination(5, java.util.concurrent.TimeUnit.SECONDS);
             log.info("Channel successfully shut down.");
         } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
             log.error("Channel shutdown interrupted: {}", e.getMessage());
+        } catch (Exception e) {
+            log.error("Unexpected error occurred during channel shutdown: {}", e.getMessage());
         }
+
     }
 }

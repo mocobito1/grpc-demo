@@ -8,9 +8,7 @@ grpc:
     host: localhost
     port: 9000
   healthcheck:
-    interval: 5000
-
-
-bookAuthor:
-  service:
-    address: "static://localhost:9000"
+    interval: 15000
+logging:
+  level:
+    io.grpc.netty: DEBUG
