@@ -2,6 +2,7 @@ package org.example.server.service;
 
 import com.example.Author;
 import com.example.BookAuthorServiceGrpc;
+import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import org.example.common.TempData;
@@ -23,7 +24,15 @@ public class BookAuthorServerService extends BookAuthorServiceGrpc.BookAuthorSer
         try {
             Optional<Author> foundAuthor = findAuthorById(request.getAuthorId());
 
-            simulateProcessingDelay();
+            for (int i = 0; i < SIMULATED_PROCESSING_DELAY_MS / 1000; i++) {
+                if (Context.current().isCancelled()) {
+                    log.warn("Request for authorId {} was canceled by the client.", request.getAuthorId());
+                    responseObserver.onError(new RuntimeException("Request canceled by client."));
+                    return;
+                }
+//                Thread.sleep(1000); // Simulate processing in chunks
+                simulateProcessingDelay();
+            }
 
             foundAuthor.ifPresentOrElse(
                     responseObserver::onNext,
@@ -57,6 +66,6 @@ public class BookAuthorServerService extends BookAuthorServiceGrpc.BookAuthorSer
     }
 
     private void simulateProcessingDelay() throws InterruptedException {
-        Thread.sleep(SIMULATED_PROCESSING_DELAY_MS);
+        Thread.sleep(0);
     }
 }
