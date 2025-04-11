@@ -1,0 +1,16 @@
+spring:
+  application:
+    name : client
+server:
+  port: 8009
+grpc:
+  server:
+    host: localhost
+    port: 9000
+  healthcheck:
+    interval: 5000
+
+
+bookAuthor:
+  service:
+    address: "static://localhost:9000"
